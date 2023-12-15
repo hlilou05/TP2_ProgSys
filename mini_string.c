@@ -60,6 +60,15 @@ return 0;
     }
 return 1;
     }
+char* mini_itoa (int i , char* buffer){
+   int a;
+   int j=0;
+   while(i !=0){
+       a=i%10;
+       i=i/10;
+       buffer[j++]= '0'+a;
+   }
+}
 
 
 
