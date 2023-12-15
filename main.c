@@ -1,3 +1,6 @@
-int main(int argc,char *argv []){
-    
+#include <stdio.h>
+int main(int argc, char const *argv[])
+{
+    return 0;
 }
+

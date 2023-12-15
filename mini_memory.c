@@ -1,23 +1,27 @@
-#include <cstddef>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <stddef.h>
 
 typedef struct malloc_element {
-    void* ptr;                      
+    void* ptr;                     
     size_t size;                    
     int status;                     
-    struct malloc_element* next;    
+    struct malloc_element* next;   
 } malloc_element;
+
 malloc_element* malloc_list = NULL;
-typedef struct {
-    size_t size;   
-    int state;     
-} MemoryBlock;
-MemoryBlock* memory_blocks = NULL;
 void* mini_calloc(int size_element,int number_element){
-    void* mem = sbrk(size_element * number_element);
-    for (size_t i = 0; i < total_size; ++i) {
-        ((char*)mem)[i] = 0;
-    return mem;    
+malloc_element* current_element = malloc_list;
+    while (current_element != NULL) {
+        if (current_element->status == 0 && current_element->size >= size_element*number_element) {
+            current_element->status = 1;
+            return current_element->ptr;
+        }
+        current_element = current_element->next;
+    }
+    void* memoire = sbrk(size_element * number_element);
+    return memoire;    
 }
 void mini_exit() {
     while (malloc_list != NULL) {
@@ -25,3 +29,11 @@ void mini_exit() {
         sbrk(-(sizeof(malloc_element) + malloc_list->size));
         malloc_list = next_element;
     }
+}
+void mini_exit(){
+    mini_exit_string();
+    _exit(0);
+}
+void mini_perror(char *message) {
+    perror(message);
+}
